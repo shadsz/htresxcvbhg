@@ -1,0 +1,74 @@
+-- Place this script in StarterGui as a LocalScript
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LoadingScreen"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Frame for Background
+local backgroundFrame = Instance.new("Frame")
+backgroundFrame.Size = UDim2.new(1, 0, 1, 0)
+backgroundFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black background
+backgroundFrame.Parent = screenGui
+
+-- Create "Script Loading" Text
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(0, 300, 0, 50)
+loadingText.Position = UDim2.new(0.5, -150, 0.4, -25) -- Centered near the top
+loadingText.BackgroundTransparency = 1
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+loadingText.TextScaled = true
+loadingText.Text = "Script Loading..."
+loadingText.Font = Enum.Font.SourceSansBold
+loadingText.Parent = backgroundFrame
+
+-- Create Countdown Text
+local countdownText = Instance.new("TextLabel")
+countdownText.Size = UDim2.new(0, 300, 0, 50)
+countdownText.Position = UDim2.new(0.5, -150, 0.5, -25) -- Centered below "Script Loading"
+countdownText.BackgroundTransparency = 1
+countdownText.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+countdownText.TextScaled = true
+countdownText.Text = "Estimated time: 1:00"
+countdownText.Font = Enum.Font.SourceSansBold
+countdownText.Parent = backgroundFrame
+
+-- Create Execute Button (Initially Invisible)
+local executeButton = Instance.new("TextButton")
+executeButton.Size = UDim2.new(0, 200, 0, 50)
+executeButton.Position = UDim2.new(0.5, -100, 0.7, -25) -- Centered at the bottom
+executeButton.BackgroundColor3 = Color3.fromRGB(0, 128, 255) -- Blue button
+executeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+executeButton.TextScaled = true
+executeButton.Text = "Execute Script"
+executeButton.Font = Enum.Font.SourceSansBold
+executeButton.Visible = false -- Hidden initially
+executeButton.Parent = backgroundFrame
+
+-- Countdown Function
+local countdownTime = 60 -- 1 minute countdown in seconds
+
+local function startCountdown()
+    while countdownTime > 0 do
+        wait(1)
+        countdownTime = countdownTime - 1
+        local minutes = math.floor(countdownTime / 60)
+        local seconds = countdownTime % 60
+        countdownText.Text = string.format("Estimated time: %d:%02d", minutes, seconds)
+    end
+
+    -- Show the Execute Button when the countdown reaches 0
+    countdownText.Text = "Script Loading Complete"
+    executeButton.Visible = true
+end
+
+-- Execute Button Functionality
+executeButton.MouseButton1Click:Connect(function()
+    -- Hide the loading screen once the player clicks the button
+    screenGui:Destroy()
+    -- Add any script execution code here if needed
+    print("Script Executed!")
+end)
+
+-- Start Countdown
+startCountdown()
